@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\mycomponents\errorManager;
 
 /**
  * This is the model class for table "users".
@@ -23,6 +24,10 @@ class Users extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+	 const SCENARIO_REGISTER="register";
+	 const SCENARIO_LOGIN="login";
+
+	 
     public static function tableName()
     {
         return 'users';
@@ -34,11 +39,26 @@ class Users extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ID'], 'required'],
-            [['ID'], 'integer'],
-            [['password'], 'string'],
-            [['lastActivity', 'registerDate'], 'safe'],
-            [['email', 'name', 'postCode', 'phoneNumber'], 'string', 'max' => 255],
+           // [['ID'], 'required'],
+           // [['ID'], 'integer'],
+          //  [['password'], 'string'],
+          //  [['lastActivity', 'registerDate'], 'safe'],
+		  
+		  // Scenario Register
+		  ['email'		,'required','on'=> self::SCENARIO_REGISTER,'message'=>errors[invalid_email]],
+		  ['email'		,'email'   ,'on'=> self::SCENARIO_REGISTER],
+		  ['email'		,'unique'  ,'on'=> self::SCENARIO_REGISTER],
+		  ['password'	,'required','on'=> self::SCENARIO_REGISTER],
+		  ['password'	,'string'  ,'min'=>1 , 'on'=>self::SCENARIO_REGISTER],
+		  ['password'	,'required','on'=>self::SCENARIO_REGISTER],
+		  ['postCode'	,'required','on'=>self::SCENARIO_REGISTER],
+		  
+		  //All Scenarios
+		 // ['postCode0'  ,'integer'],
+		 // [['email', 'name', 'postCode', 'phoneNumber'], 'string', 'max' => 255],
+
+
+
         ];
     }
 
