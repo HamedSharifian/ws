@@ -1,9 +1,7 @@
 <?php
 
 namespace app\models;
-
 use Yii;
-use app\mycomponents\errorManager;
 
 /**
  * This is the model class for table "users".
@@ -45,7 +43,7 @@ class Users extends \yii\db\ActiveRecord
           //  [['lastActivity', 'registerDate'], 'safe'],
 		  
 		  // Scenario Register
-		  ['email'		,'required','on'=> self::SCENARIO_REGISTER,'message'=>errors[invalid_email]],
+		  ['email'		,'required','on'=> self::SCENARIO_REGISTER,'message'=> Yii::$app->ErrorManager->invalid_email],
 		  ['email'		,'email'   ,'on'=> self::SCENARIO_REGISTER],
 		  ['email'		,'unique'  ,'on'=> self::SCENARIO_REGISTER],
 		  ['password'	,'required','on'=> self::SCENARIO_REGISTER],

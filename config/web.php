@@ -1,6 +1,7 @@
 <?php
 
 $params = require(__DIR__ . '/params.php');
+require_once( dirname(__FILE__) . '/../components/ErrorManager.php');
 
 $config = [
     'id' => 'basic',
@@ -14,6 +15,11 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+         'ErrorManager' => [
+ 
+            'class' => 'app\components\ErrorManager',
+ 
+            ],
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
