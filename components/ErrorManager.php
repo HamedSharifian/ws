@@ -37,14 +37,15 @@ public static function getErrorObjects($attributesErrors){
                  $errorInfo->decscriptionFa=  self::$errorsDescFA[$error];
                  array_push($ErrorInfoList, $errorInfo);
             }
-            
         }
         return $ErrorInfoList;
 }
 
 public static function finishWithError($httpCode){
+   Yii::$app->response->statusCode = $httpCode;
     switch($httpCode){
-        case 400: {Yii::$app->response->statusCode = 400; echo"Bad Request, Payload not found!" ;  }
+        case 400: { echo"Bad Request, Payload not found!" ;  }
+        case 500: {echo"Internal Server Error!" ;  }
     }
 }
 

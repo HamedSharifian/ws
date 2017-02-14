@@ -14,20 +14,23 @@ class UsersController extends \yii\web\Controller
     
     public function actionRegister(){
     	$model=new Users();
-		$errorCodes=Array();
-		$model->scenario=Users::SCENARIO_REGISTER;
+	$model->scenario=Users::SCENARIO_REGISTER;
     	if($model->load(Yii::$app->request->get())) {
-                echo "not loaded! </br>";
-            	echo \yii\helpers\Json::encode(ErrorManager::getErrorObjects($model->getErrors()));
+           if($model->validate()){
+               if($model->save()){
+                 echo "saved!";
+               }else{
+                   ErrorManager::finishWithError(500);
+               }
+           }else{
+               echo \yii\helpers\Json::encode(ErrorManager::getErrorObjects($model->getErrors()));
+           }
 
-               // var_dump(Yii::$app->request->get());
-           // $errorCodes=array_push($errorCodes, ErrorManager::getErrorObjects(ErrorManager::invalid_arguments]);
-            //echo("error");
         } else{
             ErrorManager::finishWithError(400);
         }
-
-	echo \yii\helpers\Json::encode(ErrorManager::getErrorObjects($model->getErrors()));
     }
+    
+   
 
 }

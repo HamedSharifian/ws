@@ -85,4 +85,14 @@ class Users extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Favorites::className(), ['userTo' => 'ID']);
     }
+    
+    public function beforeSave($insert) {
+        if($this->isNewRecord){
+            $max = Yii::$app->db->createCommand(' select max(ID) as max from users')->queryScalar();
+            $ID = ($max + 1);
+            $this->ID=$ID;
+        }
+         return parent::beforeSave($insert);
+
+    }
 }
