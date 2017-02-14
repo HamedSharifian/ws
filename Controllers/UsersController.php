@@ -17,11 +17,14 @@ class UsersController extends \yii\web\Controller
 		$errorCodes=Array();
 		$model->scenario=Users::SCENARIO_REGISTER;
     	if($model->load(Yii::$app->request->get())) {
-                var_dump(Yii::$app->request->get());
-            $errorCodes=array_push($errorCodes, ErrorManager::$errors[ErrorManager::invalid_arguments]);
+                echo "not loaded! </br>";
+            	echo \yii\helpers\Json::encode(ErrorManager::getErrorObjects($model->getErrors()));
+
+               // var_dump(Yii::$app->request->get());
+           // $errorCodes=array_push($errorCodes, ErrorManager::getErrorObjects(ErrorManager::invalid_arguments]);
             //echo("error");
-        } else if( !$model->validate()){
-            echo var_dump($model->getErrors());
+        } else{
+            ErrorManager::finishWithError(400);
         }
 
 	echo \yii\helpers\Json::encode(ErrorManager::getErrorObjects($model->getErrors()));

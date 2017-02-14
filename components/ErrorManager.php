@@ -2,6 +2,7 @@
 namespace app\components;
 
 use yii\base\Component;
+use Yii;
 
 class ErrorManager extends Component{
     
@@ -39,7 +40,13 @@ public static function getErrorObjects($attributesErrors){
             
         }
         return $ErrorInfoList;
- 
 }
+
+public static function finishWithError($httpCode){
+    switch($httpCode){
+        case 400: {Yii::$app->response->statusCode = 400; echo"Bad Request, Payload not found!" ;  }
+    }
+}
+
 
 }
