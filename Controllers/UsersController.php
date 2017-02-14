@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 use app\models\Users;
-use app\mycomponents\errorManager;
+use app\components\ErrorManager;
 use Yii;
 
 class UsersController extends \yii\web\Controller
@@ -17,11 +17,14 @@ class UsersController extends \yii\web\Controller
 		$errorCodes=Array();
 		$model->scenario=Users::SCENARIO_REGISTER;
     	if($model->load(Yii::$app->request->get())) {
-            $error_codes=array_push($errorCodes,errors[invalid_arguments]);
-        } else if( $model->validate()){
+                var_dump(Yii::$app->request->get());
+            $errorCodes=array_push($errorCodes, ErrorManager::$errors[ErrorManager::invalid_arguments]);
+            //echo("error");
+        } else if( !$model->validate()){
             echo var_dump($model->getErrors());
         }
-		var_dump($errorCodes);
+
+	echo \yii\helpers\Json::encode(ErrorManager::getErrorObjects($model->getErrors()));
     }
 
 }

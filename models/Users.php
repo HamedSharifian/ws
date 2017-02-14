@@ -2,6 +2,7 @@
 
 namespace app\models;
 use Yii;
+use app\components\ErrorManager;
 
 /**
  * This is the model class for table "users".
@@ -43,13 +44,13 @@ class Users extends \yii\db\ActiveRecord
           //  [['lastActivity', 'registerDate'], 'safe'],
 		  
 		  // Scenario Register
-		  ['email'		,'required','on'=> self::SCENARIO_REGISTER,'message'=> Yii::$app->ErrorManager->invalid_email],
-		  ['email'		,'email'   ,'on'=> self::SCENARIO_REGISTER],
-		  ['email'		,'unique'  ,'on'=> self::SCENARIO_REGISTER],
-		  ['password'	,'required','on'=> self::SCENARIO_REGISTER],
-		  ['password'	,'string'  ,'min'=>1 , 'on'=>self::SCENARIO_REGISTER],
-		  ['password'	,'required','on'=>self::SCENARIO_REGISTER],
-		  ['postCode'	,'required','on'=>self::SCENARIO_REGISTER],
+                  ['name'		,'required','on'=> self::SCENARIO_REGISTER,'message'=> ErrorManager::empty_name],
+		  ['email'		,'required','on'=> self::SCENARIO_REGISTER,'message'=> ErrorManager::empty_email],
+		  ['email'		,'email'   ,'on'=> self::SCENARIO_REGISTER,'message'=> ErrorManager::invalid_email],
+		  ['email'		,'unique'  ,'on'=> self::SCENARIO_REGISTER,'message'=> ErrorManager::duplicate_email],
+		  ['password'	,'required','on'=> self::SCENARIO_REGISTER,'message'=> ErrorManager::invalid_password],
+		  ['password'	,'string'  ,'min'=>1 , 'on'=>self::SCENARIO_REGISTER,'message'=> ErrorManager::invalid_password],
+		  ['postCode'	,'required','on'=>self::SCENARIO_REGISTER,'message'=> ErrorManager::invalid_postCode],
 		  
 		  //All Scenarios
 		 // ['postCode0'  ,'integer'],

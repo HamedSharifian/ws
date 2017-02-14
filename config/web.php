@@ -1,7 +1,6 @@
 <?php
 
 $params = require(__DIR__ . '/params.php');
-require_once( dirname(__FILE__) . '/../components/ErrorManager.php');
 
 $config = [
     'id' => 'basic',
@@ -18,6 +17,11 @@ $config = [
          'ErrorManager' => [
  
             'class' => 'app\components\ErrorManager',
+ 
+            ],
+        'ErrorInfo' => [
+ 
+            'class' => 'app\components\ErrorInfo',
  
             ],
         'user' => [

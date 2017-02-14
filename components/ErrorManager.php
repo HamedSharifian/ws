@@ -1,25 +1,45 @@
 <?php
-use Yii;
+namespace app\components;
+
 use yii\base\Component;
-use yii\base\InvalidConfigException;
 
 class ErrorManager extends Component{
-const invalid_arguments='invalid_arguments';
+    
+ const  invalid_arguments='900';
 //***************  USERS  *******************
-const invalid_email='invalid_email';
-const invalid_name='invalid_name';
-const invalid_password='invalid_password';
-const duplicate_email='invalid_email';
+const empty_name='891';
+const empty_email='901';
+const invalid_email='902';
+const invalid_name='903';
+const invalid_password='1001';
+const duplicate_email='904';
+const invalid_postCode='1011';
 //**********************************************
-const errors=
+ static $errorsDescFA=
 [
-	invalid_arguments=>900,
-	invalid_email=>1001,
-	invalid_name =>1002,
-	invalid_password=>1003,
-	duplicate_email=>1004
+        self::empty_name =>"نام وارد نشده است.",
+	self::invalid_arguments=>"900",
+        self::empty_email=>"ایمیل وارد نشده است.",
+	self::invalid_email=>"ایمیل نامعتبر است",
+	self::invalid_name =>"نام نامعتبر است",
+	self::invalid_password=>"رمز عبور نامعتبر است",
+	self::duplicate_email=>"این ایمیل قبلا ثبت شده است.",
+        self::invalid_postCode=>"کد  بستی نامعتبر است."
 ];
 
+public static function getErrorObjects($attributesErrors){
+        $ErrorInfoList=Array();
+        foreach($attributesErrors as $attributeError){
+            foreach($attributeError as $error){
+                 $errorInfo=new ErrorInfo();
+                 $errorInfo->code=$error;
+                 $errorInfo->decscriptionFa=  self::$errorsDescFA[$error];
+                 array_push($ErrorInfoList, $errorInfo);
+            }
+            
+        }
+        return $ErrorInfoList;
+ 
 }
 
-?>
+}
