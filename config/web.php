@@ -24,6 +24,11 @@ $config = [
             'class' => 'app\components\ErrorInfo',
  
             ],
+        'Result' => [
+ 
+            'class' => 'app\components\Result',
+ 
+            ],
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,

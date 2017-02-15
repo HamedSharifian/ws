@@ -3,6 +3,7 @@
 namespace app\controllers;
 use app\models\Users;
 use app\components\ErrorManager;
+use app\components\Result;
 use Yii;
 
 class UsersController extends \yii\web\Controller
@@ -18,17 +19,19 @@ class UsersController extends \yii\web\Controller
     	if($model->load(Yii::$app->request->get())) {
            if($model->validate()){
                if($model->save()){
-                 echo "saved!";
-               }else{
-                   ErrorManager::finishWithError(500);
+                 ErrorManager::encodeAndReturn(200,null,null);
+                 return;
                }
-           }else{
-               echo \yii\helpers\Json::encode(ErrorManager::getErrorObjects($model->getErrors()));
-           }
+               ErrorManager::encodeHttpError(500);
+               return;
+           }// validation error
+           $errorInfos=ErrorManager::getErrorObjects($model->getErrors());
+           echo \yii\helpers\Json::encode(new Result(-1,$errorInfos,null));
+           return;
 
-        } else{
-            ErrorManager::finishWithError(400);
-        }
+        } 
+        ErrorManager::encodeHttpError(400);
+        return;
     }
     
    

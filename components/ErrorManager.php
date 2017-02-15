@@ -6,6 +6,12 @@ use Yii;
 
 class ErrorManager extends Component{
     
+    
+//http erros
+const bad_Request="400";
+const server_internal_error="500";
+    
+    
  const  invalid_arguments='900';
 //***************  USERS  *******************
 const empty_name='891';
@@ -18,6 +24,9 @@ const invalid_postCode='1011';
 //**********************************************
  static $errorsDescFA=
 [
+        self::bad_Request=>"درخواست اشتباه است.",
+        self::server_internal_error=>"خطای داخلی سرور",
+        
         self::empty_name =>"نام وارد نشده است.",
 	self::invalid_arguments=>"900",
         self::empty_email=>"ایمیل وارد نشده است.",
@@ -41,13 +50,23 @@ public static function getErrorObjects($attributesErrors){
         return $ErrorInfoList;
 }
 
-public static function finishWithError($httpCode){
-   Yii::$app->response->statusCode = $httpCode;
-    switch($httpCode){
-        case 400: { echo"Bad Request, Payload not found!" ;  }
-        case 500: {echo"Internal Server Error!" ;  }
-    }
+public static function encodeHttpError($httpCode){
+    Yii::$app->response->statusCode = $httpCode;
+    $errorInfo=new ErrorInfo();
+    $errorInfo->code=$httpCode;
+    $errorInfo->decscriptionFa= self::$errorsDescFA[$httpCode];
+    echo \yii\helpers\Json::encode(new Result(-1,$errorInfo,null));
 }
+
+public static function encodeAndReturn($statusCode,$erros,$data){
+    $result=new Result($statusCode,$erros,$data);
+    echo \yii\helpers\Json::encode($result);
+}
+
+
+
+
+
 
 
 }

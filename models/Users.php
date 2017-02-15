@@ -91,6 +91,7 @@ class Users extends \yii\db\ActiveRecord
             $max = Yii::$app->db->createCommand(' select max(ID) as max from users')->queryScalar();
             $ID = ($max + 1);
             $this->ID=$ID;
+            $this->registerDate=date('Y-m-d H:i:s');
         }
          return parent::beforeSave($insert);
 

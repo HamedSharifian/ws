@@ -15,7 +15,7 @@ use yii\base\Component;
  */
 class ErrorInfo extends Component{
     //put your code here
-    public  $code;
+    public $code;
     public $decscriptionFa;
     public $descriptionEn;
     
