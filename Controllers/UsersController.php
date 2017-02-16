@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 use app\models\Users;
+use yii\helpers\Html;
+
 use app\components\ErrorManager;
 use app\components\Result;
 use Yii;
@@ -33,6 +35,11 @@ class UsersController extends \yii\web\Controller
         ErrorManager::encodeHttpError(400);
         return;
     }
+    
+    public function actionTest(){
+        echo "<script>alert(1)</script>)";
+        echo Html::encode("<script>alert(1)</script>)");
+    } 
     
    
 
