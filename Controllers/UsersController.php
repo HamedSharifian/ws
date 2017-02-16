@@ -3,7 +3,6 @@
 namespace app\controllers;
 use app\models\Users;
 use yii\helpers\Html;
-
 use app\components\ErrorManager;
 use app\components\Result;
 use Yii;
@@ -19,6 +18,8 @@ class UsersController extends \yii\web\Controller
     	$model=new Users();
 	$model->scenario=Users::SCENARIO_REGISTER;
     	if($model->load(Yii::$app->request->get())) {
+                        print($model->token);
+
            if($model->validate()){
                if($model->save()){
                  ErrorManager::encodeAndReturn(200,null,null);
@@ -34,12 +35,29 @@ class UsersController extends \yii\web\Controller
         } 
         ErrorManager::encodeHttpError(400);
         return;
+    } 
+    
+    public function actionLogin(){
+        $model=new Users();
+	$model->scenario=Users::SCENARIO_LOGIN;
+    	if($model->load(Yii::$app->request->get())) {
+           if($model->validate()){
+               ErrorManager::encodeAndReturn(200, null, null);
+               return;
+           }// validation error
+           $errorInfos=ErrorManager::getErrorObjects($model->getErrors());
+           echo \yii\helpers\Json::encode(new Result(-1,$errorInfos,null));
+           return;
+
+        } 
+        ErrorManager::encodeHttpError(400);
+        return;
     }
     
     public function actionTest(){
-        echo "<script>alert(1)</script>)";
-        echo Html::encode("<script>alert(1)</script>)");
-    } 
+        echo hash_hmac("SHA256", "abcdef", "123456",false);
+    }
+    
     
    
 

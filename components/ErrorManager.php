@@ -11,8 +11,8 @@ class ErrorManager extends Component{
 const bad_Request="400";
 const server_internal_error="500";
     
-    
- const  invalid_arguments='900';
+ const invalid_token='799';
+ const  invalid_arguments='800';
 //***************  USERS  *******************
 const empty_name='891';
 const empty_email='901';
@@ -21,6 +21,7 @@ const invalid_name='903';
 const invalid_password='1001';
 const duplicate_email='904';
 const invalid_postCode='1011';
+const invalid_email_or_password=1012;
 //**********************************************
  static $errorsDescFA=
 [
@@ -34,7 +35,9 @@ const invalid_postCode='1011';
 	self::invalid_name =>"نام نامعتبر است",
 	self::invalid_password=>"رمز عبور نامعتبر است",
 	self::duplicate_email=>"این ایمیل قبلا ثبت شده است.",
-        self::invalid_postCode=>"کد  بستی نامعتبر است."
+        self::invalid_postCode=>"کد  بستی نامعتبر است.",
+        self::invalid_email_or_password=>"ایمیل یا رمز عبور اشتباه است.",
+        self::invalid_token=>"توکن ارسال شده اشتباه است."
 ];
 
 public static function getErrorObjects($attributesErrors){
