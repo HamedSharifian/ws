@@ -10,18 +10,18 @@ class ErrorManager extends Component{
 //http erros
 const bad_Request="400";
 const server_internal_error="500";
-    
- const invalid_token='799';
- const  invalid_arguments='800';
+ const invalid_token='1001';
+ const  invalid_arguments='1002';
 //***************  USERS  *******************
-const empty_name='891';
-const empty_email='901';
-const invalid_email='902';
-const invalid_name='903';
-const invalid_password='1001';
-const duplicate_email='904';
-const invalid_postCode='1011';
-const invalid_email_or_password=1012;
+const empty_name='1003';
+const empty_email='1004';
+const invalid_email='1005';
+const invalid_name='1006';
+const invalid_password='1007';
+const duplicate_email='1008';
+const invalid_postCode='1009';
+const invalid_email_or_password='1010';
+const user_not_found='1011';
 //**********************************************
  static $errorsDescFA=
 [
@@ -37,7 +37,25 @@ const invalid_email_or_password=1012;
 	self::duplicate_email=>"این ایمیل قبلا ثبت شده است.",
         self::invalid_postCode=>"کد  بستی نامعتبر است.",
         self::invalid_email_or_password=>"ایمیل یا رمز عبور اشتباه است.",
-        self::invalid_token=>"توکن ارسال شده اشتباه است."
+        self::invalid_token=>"توکن ارسال شده اشتباه است.",
+        self::user_not_found=>"کاربر یافت نشد."
+];
+ 
+  static $errorsDescEn=
+[
+        self::bad_Request=>"Bad Request.",
+        self::server_internal_error=>"Server Internal Error",
+        self::empty_name =>"Name is empty.",
+	self::invalid_arguments=>"Invalid Arguments.",
+        self::empty_email=>"Empty Email.",
+	self::invalid_email=>"Invalid Email.",
+	self::invalid_name =>"Invalid Name.",
+	self::invalid_password=>"Invalid Password.",
+	self::duplicate_email=>"Duplicate Email!",
+        self::invalid_postCode=>"Invalid Post Code.",
+        self::invalid_email_or_password=>"Invalid Email or Password!",
+        self::invalid_token=>"Invalid Token!",
+        self::user_not_found=>"User not found!"
 ];
 
 public static function getErrorObjects($attributesErrors){
@@ -47,6 +65,7 @@ public static function getErrorObjects($attributesErrors){
                  $errorInfo=new ErrorInfo();
                  $errorInfo->code=$error;
                  $errorInfo->decscriptionFa=  self::$errorsDescFA[$error];
+                 $errorInfo->descriptionEn=self::$errorsDescEn[$error];
                  array_push($ErrorInfoList, $errorInfo);
             }
         }
@@ -58,6 +77,7 @@ public static function encodeHttpError($httpCode){
     $errorInfo=new ErrorInfo();
     $errorInfo->code=$httpCode;
     $errorInfo->decscriptionFa= self::$errorsDescFA[$httpCode];
+    $errorInfo->descriptionEn=self::$errorsDescEn[$httpCode];
     echo \yii\helpers\Json::encode(new Result(-1,$errorInfo,null));
 }
 

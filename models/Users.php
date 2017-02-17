@@ -23,10 +23,11 @@ class Users extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-	 const SCENARIO_REGISTER="register";
-	 const SCENARIO_LOGIN="login";
+    const SCENARIO_REGISTER="register";
+    const SCENARIO_LOGIN="login";
+    const SCENARIO_EDIT="Edit";
 
-       public $token; 
+      public $token; 
 	 
     public static function tableName()
     {
@@ -59,8 +60,19 @@ class Users extends \yii\db\ActiveRecord
 		  ['email'	,'required'        ,'on'=> self::SCENARIO_LOGIN,'message'=> ErrorManager::empty_email],
 		  ['email'      ,'email'           ,'on'=> self::SCENARIO_LOGIN,'message'=> ErrorManager::invalid_email],
 		  ['password'	,'required'        ,'on'=> self::SCENARIO_LOGIN,'message'=> ErrorManager::invalid_password],
-		  ['password'	,'authenticate'          ,'on'=> self::SCENARIO_LOGIN,'message'=> ErrorManager::invalid_password],
-                  ['token','safe']
+		  ['password'	,'authenticate'   ,'on'=> self::SCENARIO_LOGIN,'message'=> ErrorManager::invalid_password],
+                  ['token'	,'required'       ,'on'=>self::SCENARIO_LOGIN,'message'=> ErrorManager::invalid_token],
+		  ['token'	,'tokenvalidator' ,'on'=>self::SCENARIO_LOGIN,'message'=> ErrorManager::invalid_token],
+            
+            
+                  ['name'		,'required','on'=> self::SCENARIO_EDIT,'message'=> ErrorManager::empty_name],
+		  ['email'		,'required','on'=> self::SCENARIO_EDIT,'message'=> ErrorManager::empty_email],
+		  ['email'		,'email'   ,'on'=> self::SCENARIO_EDIT,'message'=> ErrorManager::invalid_email],
+                  ['email'		,'checkuserexistance'   ,'on'=> self::SCENARIO_EDIT,'message'=> ErrorManager::user_not_found],
+		  ['postCode'   	,'required','on'=>self::SCENARIO_EDIT,'message'=> ErrorManager::invalid_postCode],
+		  ['token'	        ,'required','on'=>self::SCENARIO_EDIT,'message'=> ErrorManager::invalid_token],
+		  ['token'	        ,'tokenvalidator','on'=>self::SCENARIO_EDIT,'message'=> ErrorManager::invalid_token],
+                  ['token','safe'],
 
 
         ];
@@ -88,7 +100,7 @@ class Users extends \yii\db\ActiveRecord
         if(!$this->hasErrors())  // we only want to authenticate when no input errors
                 {
                        $savedPass = Yii::$app->db->createCommand("select password from users where email='".$this->email."'")->queryOne();
-                       if($savedPass==null || !hash_equals($savedPass['password'], $this->getHash($this->password))){
+                       if($savedPass==null || strcmp($savedPass['password'],$this->password)){
                           $this->addError('email',  ErrorManager::invalid_email_or_password);
                        }
                 }
@@ -108,9 +120,9 @@ class Users extends \yii\db\ActiveRecord
             $ID = ($max + 1);
             $this->ID=$ID;
             $this->registerDate=date('Y-m-d H:i:s');
-            $this->password=self::getHash($this->password);
+           // $this->password=$this->password;
         }
-         return parent::beforeSave($insert);
+        return parent::beforeSave($insert);
     }
     
     function getHash($password){
@@ -118,23 +130,50 @@ class Users extends \yii\db\ActiveRecord
     }
     
     function getToken($email,$password){
-        echo hash_hmac("SHA256", $email.$password, "uYC0NI9/d365edDw#&Z;jsadlj",false);
         return hash_hmac("SHA256", $email.$password, "uYC0NI9/d365edDw#&Z;jsadlj",false);
     }
     
-    function tokenIsValid(){
+    function tokenIsCorrect($use_db_password){ 
+        if($use_db_password){
+            $user=  $this->findByEmail($this->email);
+            if($user!=null){  // find user in db and check token
+                $user->token=$this->token;
+                return $user->tokenIsCorrect(false);
+            }else{
+                return false; // user not found
+            }
+        }
         $validToken=$this->getToken($this->email,$this->password);
         return strcmp($validToken, $this->token)==0;
     }
     
+    
     function tokenvalidator(){
-        switch($this->scenario){
-            case self::SCENARIO_REGISTER:{
-                if(!$this->tokenIsValid()){
-                     $this->addError('token',  ErrorManager::invalid_token);
-                }
-            }   
+        $use_db_password=true;
+        if(strcmp($this->scenario,self::SCENARIO_REGISTER)==0){
+            $use_db_password=false;
         }
-        
+        if(!$this->tokenIsCorrect($use_db_password)){
+            $this->addError('token',  ErrorManager::invalid_token);
+        } 
     }
+    
+    
+    
+    function findByEmail($email){
+         $user = Users::find()
+         ->where(['email' => $email])
+         ->one();
+         return $user;
+    }
+    
+    
+    function checkuserexistance(){
+         $user = $this->findByEmail($this->email);
+         if($user==null){
+            $this->addError('token',  ErrorManager::user_not_found);
+         }
+    }
+    
+    
 }
