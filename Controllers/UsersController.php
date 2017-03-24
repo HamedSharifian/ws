@@ -15,7 +15,7 @@ class UsersController extends \yii\web\Controller
     }
     
     public function actionRegister(){
-    	$model=new Users();
+    $model=new Users();
 	$model->scenario=Users::SCENARIO_REGISTER;
     	if($model->load(Yii::$app->request->get())) {
            if($model->validate()){
@@ -36,7 +36,7 @@ class UsersController extends \yii\web\Controller
     
     public function actionLogin(){
         $model=new Users();
-	$model->scenario=Users::SCENARIO_LOGIN;
+	    $model->scenario=Users::SCENARIO_LOGIN;
     	if($model->load(Yii::$app->request->get())) {
            if($model->validate()){
                ErrorManager::encodeAndReturn(200, null, null);
@@ -45,7 +45,6 @@ class UsersController extends \yii\web\Controller
            $errorInfos=ErrorManager::getErrorObjects($model->getErrors());
            echo \yii\helpers\Json::encode(new Result(-1,$errorInfos,null));
            return;
-
         } 
         ErrorManager::encodeHttpError(400);
         return;
