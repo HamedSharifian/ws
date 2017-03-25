@@ -23,11 +23,11 @@ const invalid_postCode='1009';
 const invalid_email_or_password='1010';
 const user_not_found='1011';
 //**********************************************
+const invalid_category_id='1012';
  static $errorsDescFA=
 [
         self::bad_Request=>"درخواست اشتباه است.",
-        self::server_internal_error=>"خطای داخلی سرور",
-        
+        self::server_internal_error=>"خطای داخلی سرور",    
         self::empty_name =>"نام وارد نشده است.",
 	self::invalid_arguments=>"900",
         self::empty_email=>"ایمیل وارد نشده است.",
@@ -38,7 +38,8 @@ const user_not_found='1011';
         self::invalid_postCode=>"کد  بستی نامعتبر است.",
         self::invalid_email_or_password=>"ایمیل یا رمز عبور اشتباه است.",
         self::invalid_token=>"توکن ارسال شده اشتباه است.",
-        self::user_not_found=>"کاربر یافت نشد."
+        self::user_not_found=>"کاربر یافت نشد.",
+        self::invalid_category_id=>"شناسه دسته بندی اشتباه است."
 ];
  
   static $errorsDescEn=
@@ -55,7 +56,8 @@ const user_not_found='1011';
         self::invalid_postCode=>"Invalid Post Code.",
         self::invalid_email_or_password=>"Invalid Email or Password!",
         self::invalid_token=>"Invalid Token!",
-        self::user_not_found=>"User not found!"
+        self::user_not_found=>"User not found!",
+        self::invalid_category_id=>"Getegory ID is invalid"
 ];
 
 public static function getErrorObjects($attributesErrors){

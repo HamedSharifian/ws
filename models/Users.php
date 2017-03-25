@@ -23,11 +23,14 @@ class Users extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+	 
     const SCENARIO_REGISTER="register";
     const SCENARIO_LOGIN="login";
     const SCENARIO_EDIT="Edit";
 
       public $token; 
+	  
+	const KEY="uYC0NI9/d365edDw#&Z;jsadlj";
 	 
     public static function tableName()
     {
@@ -130,7 +133,7 @@ class Users extends \yii\db\ActiveRecord
     }
     
     function getToken($email,$password){
-        return hash_hmac("SHA256", $email.$password, "uYC0NI9/d365edDw#&Z;jsadlj",false);
+        return hash_hmac("SHA256", $email.$password, self::KEY,false);
     }
     
     function tokenIsCorrect($use_db_password){ 

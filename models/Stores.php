@@ -12,9 +12,8 @@ use Yii;
  * @property string $logo
  * @property string $link
  * @property integer $rial
- *
  * @property Stocks[] $stocks
- */
+**/
 class Stores extends \yii\db\ActiveRecord
 {
     /**
@@ -59,4 +58,4 @@ class Stores extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Stocks::className(), ['storeTo' => 'ID']);
     }
-}
+
