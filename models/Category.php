@@ -3,22 +3,26 @@
 namespace app\models;
 
 use Yii;
-
+use app\components\ErrorManager;
 /**
- * This is the model class for table "category".
+ * This is the model class for table "subcategory1".
  *
  * @property integer $ID
  * @property string $title
- * @property string $icon
+ * @property integer $category
  */
 class Category extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
+        const SCENARIO_GETALL="GetAll";
+
+    
+    
     public static function tableName()
     {
-        return 'category';
+        return 'categories';
     }
 
     /**
@@ -27,9 +31,12 @@ class Category extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ID'], 'required'],
-            [['ID'], 'integer'],
-            [['title', 'icon'], 'string', 'max' => 255],
+              ['MAIN_CATEGORY'	,'required','on'=>self::SCENARIO_GETALL,'message'=> ErrorManager::invalid_category_id],
+              ['MAIN_CATEGORY'	,'integer','on'=>self::SCENARIO_GETALL,'message'=> ErrorManager::invalid_category_id],
+
+          //  [['ID'], 'required'],
+            //[['ID', 'category'], 'integer'],
+           // [['title'], 'string', 'max' => 255],
         ];
     }
 
@@ -41,7 +48,7 @@ class Category extends \yii\db\ActiveRecord
         return [
             'ID' => 'ID',
             'title' => 'Title',
-            'icon' => 'Icon',
+            'MAIN_CATEGORY' => 'Main Category',
         ];
     }
 }

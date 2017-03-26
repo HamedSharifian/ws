@@ -59,3 +59,4 @@ class Stores extends \yii\db\ActiveRecord
         return $this->hasMany(Stocks::className(), ['storeTo' => 'ID']);
     }
 
+}

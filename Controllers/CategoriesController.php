@@ -11,21 +11,24 @@ class CategoriesController extends \yii\web\Controller
 {
    
     
-    public function actionGetall(){
-        $models=Category::find()->all();
-        $assetsFolder=Yii::$app->urlManager->createAbsoluteUrl('')."assets/icons/";
-        foreach($models as $model){
-            $model->icon=$assetsFolder.$model->icon;
-        }
-        ErrorManager::encodeAndReturn(200, null, $models);
-        /*
-        if($model->load(Yii::$app->request->get())) {
+   
+    
+   
+    
+     public function actionGetall(){
+    $model=new Category();
+	$model->scenario= Category::SCENARIO_GETALL;
+    	if($model->load(Yii::$app->request->get())) {
            if($model->validate()){
-               if($model->save()){
-                 ErrorManager::encodeAndReturn(200,null,null);
-                 return;
-               }
-               ErrorManager::encodeHttpError(500);
+              // if($model->save()){
+                // ErrorManager::encodeAndReturn(200,null,null);
+                // return;
+              // }
+               $models=$model->find()->where(["MAIN_CATEGORY"=>$model->MAIN_CATEGORY])->all();
+               ErrorManager::encodeAndReturn(200, null, $models);
+
+              // var_dump($model);
+               //ErrorManager::encodeHttpError(500);
                return;
            }// validation error
            $errorInfos=ErrorManager::getErrorObjects($model->getErrors());
@@ -33,11 +36,7 @@ class CategoriesController extends \yii\web\Controller
            return;
         } 
         ErrorManager::encodeHttpError(400);
-        return;*/
-    } 
-    
-    public function actionTest(){
-        echo Yii::$app->urlManager->createAbsoluteUrl('');
+        return;
     }
     
     
