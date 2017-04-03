@@ -39,13 +39,14 @@ class UsersController extends \yii\web\Controller
 	    $model->scenario=Users::SCENARIO_LOGIN;
     	if($model->load(Yii::$app->request->get())) {
            if($model->validate()){
-               ErrorManager::encodeAndReturn(200, null, null);
+               $model=Users::findByEmail($model->email);
+               ErrorManager::encodeAndReturn(200, null, $model);
                return;
            }// validation error
            $errorInfos=ErrorManager::getErrorObjects($model->getErrors());
            echo \yii\helpers\Json::encode(new Result(-1,$errorInfos,null));
            return;
-        } 
+        }
         ErrorManager::encodeHttpError(400);
         return;
     }
@@ -59,7 +60,7 @@ class UsersController extends \yii\web\Controller
                $db_model->postCode=$model->postCode;
                $db_model->name=$model->name;
                if($db_model->save()){
-                 ErrorManager::encodeAndReturn(200,null,null);
+                 ErrorManager::encodeAndReturn(200,null,$db_model);
                  return;
                }
                ErrorManager::encodeHttpError(500);

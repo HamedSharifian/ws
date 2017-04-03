@@ -162,8 +162,7 @@ class Users extends \yii\db\ActiveRecord
     }
     
     
-    
-    function findByEmail($email){
+    static function findByEmail($email){
          $user = Users::find()
          ->where(['email' => $email])
          ->one();
