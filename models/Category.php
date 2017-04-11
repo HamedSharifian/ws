@@ -32,7 +32,7 @@ class Category extends \yii\db\ActiveRecord
     {
         return [
               ['MAIN_CATEGORY'	,'required','on'=>self::SCENARIO_GETALL,'message'=> ErrorManager::invalid_category_id],
-              ['MAIN_CATEGORY'	,'integer','on'=>self::SCENARIO_GETALL,'message'=> ErrorManager::invalid_category_id],
+              ['MAIN_CATEGORY'	,'integer' ,'on'=>self::SCENARIO_GETALL,'message'=> ErrorManager::invalid_category_id],
 
           //  [['ID'], 'required'],
             //[['ID', 'category'], 'integer'],
