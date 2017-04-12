@@ -24,6 +24,8 @@ const invalid_email_or_password='1010';
 const user_not_found='1011';
 //**********************************************
 const invalid_category_id='1012';
+const invalid_storeTo='1014';
+
  static $errorsDescFA=
 [
         self::bad_Request=>"درخواست اشتباه است.",
@@ -39,7 +41,8 @@ const invalid_category_id='1012';
         self::invalid_email_or_password=>"ایمیل یا رمز عبور اشتباه است.",
         self::invalid_token=>"توکن ارسال شده اشتباه است.",
         self::user_not_found=>"کاربر یافت نشد.",
-        self::invalid_category_id=>"شناسه دسته بندی اشتباه است."
+        self::invalid_category_id=>"شناسه دسته بندی اشتباه است.",
+        self::invalid_storeTo=>"شناسه فروشگاه اشتباه است."
 ];
  
   static $errorsDescEn=
@@ -57,7 +60,8 @@ const invalid_category_id='1012';
         self::invalid_email_or_password=>"Invalid Email or Password!",
         self::invalid_token=>"Invalid Token!",
         self::user_not_found=>"User not found!",
-        self::invalid_category_id=>"Getegory ID is invalid"
+        self::invalid_category_id=>"Getegory ID is invalid",
+        self::invalid_storeTo=>"Invalid store id"
 ];
 
 public static function getErrorObjects($attributesErrors){
