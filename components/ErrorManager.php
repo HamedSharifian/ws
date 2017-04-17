@@ -89,7 +89,8 @@ public static function encodeHttpError($httpCode){
 
 public static function encodeAndReturn($statusCode,$erros,$data){
     $result=new Result($statusCode,$erros,$data);
-    echo \yii\helpers\Json::encode($result);
+    $data=\yii\helpers\Json::encode($result);
+    echo $data;
 }
 
 

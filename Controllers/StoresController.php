@@ -16,14 +16,14 @@ class StoresController extends \yii\web\Controller
     
     public function actionGetall(){
     	$models=  \app\models\Stores::find()->all();
-        $assetsFolder=Yii::$app->urlManager->createAbsoluteUrl('')."assets/icons/";
-        foreach($models as $model){
-            $model->logo=$assetsFolder.$model->logo;
-        }
+        //$assetsFolder=Yii::$app->urlManager->createAbsoluteUrl('')."assets/icons/";
+        //foreach($models as $model){
+           // $model->logo=$assetsFolder.$model->logo;
+        //}
         ErrorManager::encodeAndReturn(200, null, $models);
     } 
     
-    
+
  
  
    
