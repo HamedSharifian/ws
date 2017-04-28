@@ -3,11 +3,11 @@
 namespace app\models;
 
 use Yii;
-
+use app\components\ErrorManager;
 /**
  * This is the model class for table "products".
  *
- * @property integer $ID
+ * @property string $ID
  * @property string $title
  * @property string $brand
  * @property integer $maxPrice
@@ -20,10 +20,16 @@ use Yii;
  *
  * @property Favorites[] $favorites
  * @property Subcategories $subCategory0
+ * @property Shoppinglists[] $shoppinglists
  * @property Stocks[] $stocks
  */
 class Products extends \yii\db\ActiveRecord
 {
+    
+     const SCENARIO_GET_PRODUCT="GET_PRODUCT";
+
+    
+    
     /**
      * @inheritdoc
      */
@@ -37,12 +43,10 @@ class Products extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        return [
-            [['ID'], 'required'],
-            [['ID', 'maxPrice', 'minPrice', 'subCategory'], 'integer'],
-            [['description', 'icon'], 'string'],
-            [['title', 'brand', 'barcode', 'crawlCat'], 'string', 'max' => 255],
-            [['subCategory'], 'exist', 'skipOnError' => true, 'targetClass' => Subcategories::className(), 'targetAttribute' => ['subCategory' => 'ID']],
+       return [
+            [['ID'], 'required','on'=>self::SCENARIO_GET_PRODUCT,'message'=>  ErrorManager::invalid_product_id],
+            [['ID'], 'integer' ,'on'=>self::SCENARIO_GET_PRODUCT,'message'=>  ErrorManager::invalid_product_id],
+            [['ID'],'checkProductExistance','on'=>self::SCENARIO_GET_PRODUCT]
         ];
     }
 
@@ -84,8 +88,23 @@ class Products extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getShoppinglists()
+    {
+        return $this->hasMany(Shoppinglists::className(), ['productTo' => 'ID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getStocks()
     {
         return $this->hasMany(Stocks::className(), ['productTo' => 'ID']);
+    }
+    
+    
+    function checkProductExistance(){
+        if(!$this->find()->where(["ID"=>$this->ID])->exists()){
+             $this->addError('ID',  ErrorManager::product_not_found);
+        }
     }
 }
