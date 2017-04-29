@@ -65,7 +65,23 @@ class StocksController extends \yii\web\Controller
     }
     
     
- 
+    public function actionStockofproduct(){
+         $model=new \app\models\Stocks();
+	 $model->scenario= \app\models\Stocks::SCENARIO_GET_STOCKS_OF_PRODUCT;
+    	 if($model->load(Yii::$app->request->get())) {
+           if($model->validate()){
+    	       $dbModel= \app\models\Stocks::find()
+                       ->where(["productTo"=>$model->productTo])->all();
+               ErrorManager::encodeAndReturn(200, null, $dbModel);
+               return;
+           }// validation error
+           $errorInfos=ErrorManager::getErrorObjects($model->getErrors());
+           ErrorManager::encodeAndReturn(-1,$errorInfos,null);
+           return;
+        } 
+        ErrorManager::encodeHttpError(400);
+        return;
+    }
  
    
 

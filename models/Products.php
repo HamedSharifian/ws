@@ -28,8 +28,7 @@ class Products extends \yii\db\ActiveRecord
     
      const SCENARIO_GET_PRODUCT="GET_PRODUCT";
 
-    
-    
+    var $Stocks1;
     /**
      * @inheritdoc
      */

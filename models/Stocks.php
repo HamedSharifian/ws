@@ -30,7 +30,7 @@ class Stocks extends \yii\db\ActiveRecord
      */
     
      const SCENARIO_GET_BEAST_DEALS="GETBESTDEALS";
-
+     const SCENARIO_GET_STOCKS_OF_PRODUCT="GETSTOCKSOFPRODUCT";
     
     
     public static function tableName()
@@ -46,6 +46,9 @@ class Stocks extends \yii\db\ActiveRecord
         return [
             [['storeTo'], 'required','on'=>self::SCENARIO_GET_BEAST_DEALS,'message'=>  ErrorManager::invalid_storeTo],
             [['storeTo'], 'integer' ,'on'=>self::SCENARIO_GET_BEAST_DEALS,'message'=>  ErrorManager::invalid_storeTo],
+             [['productTo'], 'required' ,'on'=>self::SCENARIO_GET_STOCKS_OF_PRODUCT,'message'=>  ErrorManager::invalid_product_id],
+            [['productTo'], 'integer' ,'on'=>self::SCENARIO_GET_STOCKS_OF_PRODUCT,'message'=>  ErrorManager::invalid_product_id],
+
         ];
     }
 
