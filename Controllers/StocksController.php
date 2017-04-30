@@ -65,7 +65,7 @@ class StocksController extends \yii\web\Controller
     }
     
     
-    public function actionStockofproduct(){
+    public function actionStocksofproduct(){
          $model=new \app\models\Stocks();
 	 $model->scenario= \app\models\Stocks::SCENARIO_GET_STOCKS_OF_PRODUCT;
     	 if($model->load(Yii::$app->request->get())) {
