@@ -82,6 +82,8 @@ class StocksController extends \yii\web\Controller
         ErrorManager::encodeHttpError(400);
         return;
     }
+    
+   
  
    
 

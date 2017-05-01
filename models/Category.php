@@ -17,6 +17,7 @@ class Category extends \yii\db\ActiveRecord
      * @inheritdoc
      */
         const SCENARIO_GETALL="GetAll";
+        const SCENARIO_GET_STOKCS="GETSTOCKS";
 
     
     
@@ -33,6 +34,8 @@ class Category extends \yii\db\ActiveRecord
         return [
               ['MAIN_CATEGORY'	,'required','on'=>self::SCENARIO_GETALL,'message'=> ErrorManager::invalid_category_id],
               ['MAIN_CATEGORY'	,'integer' ,'on'=>self::SCENARIO_GETALL,'message'=> ErrorManager::invalid_category_id],
+              ['ID'	,'required','on'=>self::SCENARIO_GET_STOKCS,'message'=> ErrorManager::invalid_category_id],
+              ['ID'	,'integer' ,'on'=>self::SCENARIO_GET_STOKCS,'message'=> ErrorManager::invalid_category_id],
 
           //  [['ID'], 'required'],
             //[['ID', 'category'], 'integer'],
