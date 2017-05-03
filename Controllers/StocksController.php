@@ -71,7 +71,7 @@ class StocksController extends \yii\web\Controller
     	 if($model->load(Yii::$app->request->get())) {
            if($model->validate()){
     	       $dbModel= \app\models\Stocks::find()
-                       ->where(["productTo"=>$model->productTo])->all();
+                       ->where(["productTo"=>$model->productTo])->andWhere(['not', ['price' => null]])->andWhere(['not', ['discount' => null]])->all();
                ErrorManager::encodeAndReturn(200, null, $dbModel);
                return;
            }// validation error

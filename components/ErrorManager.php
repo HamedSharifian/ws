@@ -28,6 +28,8 @@ const invalid_storeTo='1014';
 //*************** Product ***********************
 const invalid_product_id='1019';
 const product_not_found='1020';
+const invalid_store_id=1021;
+const duplicate_favourite=1022;
 
  static $errorsDescFA=
 [
@@ -47,7 +49,9 @@ const product_not_found='1020';
         self::invalid_category_id=>"شناسه دسته بندی اشتباه است.",
         self::invalid_storeTo=>"شناسه فروشگاه اشتباه است.",
         self::invalid_product_id=>"کد محصول اشتباه است.",
-        self::product_not_found=>"محصول موجود نیست."
+        self::product_not_found=>"محصول موجود نیست.",
+        self::invalid_store_id=>"شناسه فروشگاه اشتباه است.",
+        self::duplicate_favourite=>"محصول قبلا به لیست علاقه مندی های شما افزوده شده است."
 ];
  
   static $errorsDescEn=
@@ -68,7 +72,9 @@ const product_not_found='1020';
         self::invalid_category_id=>"Getegory ID is invalid",
         self::invalid_storeTo=>"Invalid store id",
         self::invalid_product_id=>"Invalid product id",
-        self::product_not_found=>"Product not found."
+        self::product_not_found=>"Product not found.",
+        self::invalid_store_id=>"Invalid Store id",
+        self::duplicate_favourite=>"This product is in your favourites"
 ];
 
 public static function getErrorObjects($attributesErrors){

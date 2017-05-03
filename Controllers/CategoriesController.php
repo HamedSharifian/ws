@@ -41,24 +41,27 @@ class CategoriesController extends \yii\web\Controller
     
      public function actionGetstocks(){
         $category=new \app\models\Category();
+        $store=new \app\models\Stores();
 	 $category->scenario= \app\models\Category::SCENARIO_GET_STOKCS;
-    	 if($category->load(Yii::$app->request->get())) {
-           if($category->validate()){
-               echo $category->ID;
-               //$subCategoriesQuery=  \app\models\Subcategory::find()->where(['CATEGORY'=>$category->ID])->select('ID');
-               //$productQuery= \app\models\Products::find()->where(['in','33',$subCategoriesQuery]);
-               
-              // echo json_encode($subCategoriesQuery->all());
-               $query=  \app\models\Subcategory::find()->where(['CATEGORY'=>$category->ID])->joinWith("products")->joinWith("stocks");
-               var_dump($query->all());
-               
-               
-              // $stocks= \app\models\Stocks::find()->where(["productTo"=>$model->productTo])->all();
-              // ErrorManager::encodeAndReturn(200, null, $dbModel);
+         $store->scenario=\app\models\Stores::SCENARIO_GET_STOKCS;
+    	 if($category->load(Yii::$app->request->get()) && $store->load(Yii::$app->request->get())) {
+           if($category->validate() && $store->validate()){
+               //$subcats=  \app\models\Subcategory::find()->where(["CATEGORY"=>$category->ID])->select(["ID"]);//->all();
+              // $prodcuts= \app\models\Products::find()->where('in',"subCategory",$subcats);
+              // echo \yii\helpers\Json::encode($prodcuts->all());
+               $query=new \yii\db\Query();
+               $result=  $query->select("s.*")->from("stocks s,products,subcategories")->where("price is not null && productTo=products.ID && products.subCategory=subcategories.ID && subcategories.CATEGORY=$category->ID && storeTo=$store->ID");
+               //var_dump($query->createCommand()->queryAll());
+               ErrorManager::encodeAndReturn(200, null, $query->createCommand()->queryAll());
                return;
            }// validation error
-           $errorInfos=ErrorManager::getErrorObjects($category->getErrors());
-           ErrorManager::encodeAndReturn(-1,$errorInfos,null);
+           if(!$category->validate()){
+             $errorInfos=ErrorManager::getErrorObjects($category->getErrors());
+              ErrorManager::encodeAndReturn(-1,$errorInfos,null);
+           }else{
+               $errorInfos=ErrorManager::getErrorObjects($store->getErrors());
+              ErrorManager::encodeAndReturn(-1,$errorInfos,null);
+           }
            return;
         } 
         ErrorManager::encodeHttpError(400);

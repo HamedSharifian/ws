@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\components\ErrorManager;
 
 /**
  * This is the model class for table "stores".
@@ -16,6 +17,10 @@ use Yii;
 **/
 class Stores extends \yii\db\ActiveRecord
 {
+    
+    const SCENARIO_GET_STOKCS="Get_Stocks";
+
+
     /**
      * @inheritdoc
      */
@@ -30,10 +35,11 @@ class Stores extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ID'], 'required'],
-            [['ID', 'rial'], 'integer'],
-            [['link'], 'string'],
-            [['name', 'logo'], 'string', 'max' => 255],
+              ['ID'	,'required','on'=>self::SCENARIO_GET_STOKCS,'message'=> ErrorManager::invalid_store_id],
+              ['ID'	,'integer' ,'on'=>self::SCENARIO_GET_STOKCS,'message'=> ErrorManager::invalid_store_id],
+            //[['ID', 'rial'], 'integer'],
+            //[['link'], 'string'],
+            //[['name', 'logo'], 'string', 'max' => 255],
         ];
     }
 

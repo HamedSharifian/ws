@@ -27,6 +27,7 @@ class Users extends \yii\db\ActiveRecord
     const SCENARIO_REGISTER="register";
     const SCENARIO_LOGIN="login";
     const SCENARIO_EDIT="Edit";
+    const SCENARIO_ADD_FAVOURITE="ADD_FAVOURITE";
 
       public $token; 
 	  
@@ -75,6 +76,12 @@ class Users extends \yii\db\ActiveRecord
 		  ['postCode'   	,'required','on'=>self::SCENARIO_EDIT,'message'=> ErrorManager::invalid_postCode],
 		  ['token'	        ,'required','on'=>self::SCENARIO_EDIT,'message'=> ErrorManager::invalid_token],
 		  ['token'	        ,'tokenvalidator','on'=>self::SCENARIO_EDIT,'message'=> ErrorManager::invalid_token],
+            
+                  ['email'		,'required','on'=> self::SCENARIO_ADD_FAVOURITE,'message'=> ErrorManager::invalid_email],
+		  ['email'		,'email'   ,'on'=> self::SCENARIO_ADD_FAVOURITE,'message'=> ErrorManager::invalid_email],
+                  ['email'		,'checkuserexistance'   ,'on'=> self::SCENARIO_ADD_FAVOURITE,'message'=> ErrorManager::user_not_found],
+		  ['token'	        ,'required','on'=>self::SCENARIO_ADD_FAVOURITE,'message'=> ErrorManager::invalid_token],
+		  ['token'	        ,'tokenvalidator','on'=>self::SCENARIO_ADD_FAVOURITE,'message'=> ErrorManager::invalid_token],            
                   ['token','safe'],
 
 
