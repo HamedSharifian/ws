@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 use app\models\Users;
+use app\models\Stocks;
 use app\components\ErrorManager;
 use app\components\Result;
 use Yii;
@@ -53,54 +54,43 @@ class FavouritesController extends \yii\web\Controller
     
     public function actionGetall(){
          $user=new Users();
-	 $user->scenario= Users::SCENARIO_ACCESS_ACCOUNT ;
-         $userId=-1;
-         if($user->load(Yii::$app->request->get())) {
-           if($user->validate()){
+         $stock=new Stocks();
+         $user->scenario= Users::SCENARIO_ACCESS_ACCOUNT ;
+	 $stock->scenario= \app\models\Stocks::SCENARIO_GET_FAVOURITES ;
+         if($user->load(Yii::$app->request->get()) && $stock->load(Yii::$app->request->get())) {
+           if($user->validate() && $stock->validate()){
     	       $dbUser=  Users::findByEmail($user->email);
                $userId=$dbUser->ID;
-           }else{// validation error
-                $errorInfos=ErrorManager::getErrorObjects($user->getErrors());
-                 ErrorManager::encodeAndReturn(-1,$errorInfos,null);
-                 return;
-           }
-        }
-        
-         $store=new app\models\Stores();
-	 $store->scenario= \app\models\Stores::SCENARIO_ACCESS_ACCOUNT ;
-         $userId=-1;
-         if($user->load(Yii::$app->request->get())) {
-           if($user->validate()){
-    	       $dbUser=  Users::findByEmail($user->email);
-               $userId=$dbUser->ID;
-           }else{// validation error
-                $errorInfos=ErrorManager::getErrorObjects($user->getErrors());
-                 ErrorManager::encodeAndReturn(-1,$errorInfos,null);
-                 return;
-           }
-        }        
-         
-         
-    	 if($model->load(Yii::$app->request->get())) {
-           if($model->validate()){
-    	       $models= \app\models\Stocks::find()
-                       ->where(["storeTo"=>$model->storeTo])
-                       ->andWhere(["is not","discount",null])
-                       ->orderBy(['discount' => SORT_DESC])->all();
                
-               ErrorManager::encodeAndReturn(200, null, $models);
+               $query = new \yii\db\Query();
+                $query->select('s.*')
+                    ->from("stocks s ,favorites f,products p ")
+                      ->where("f.userTo = $dbUser->ID AND f.`productTo` = p.`ID` AND s.`productTo` = p.`ID`  AND s.`storeTo`= $stock->storeTo")
+                     ->andWhere(["is not","price",null]);
+
+                      $stocks = $query->all();
+               ErrorManager::encodeAndReturn(200, null, $stocks);
 
                return;
-           }// validation error
-           $errorInfos=ErrorManager::getErrorObjects($model->getErrors());
-           ErrorManager::encodeAndReturn(-1,$errorInfos,null);
-           return;
-        } 
-        ErrorManager::encodeHttpError(400);
-        return;
-        
-        
-        
+               
+               
+          
+               
+           }else{// validation error
+               $errors=null;
+               if(!$user->validate()){
+               $errors=$user->getErrors();
+                } else{
+                  $errors=$store->getErrors();
+               }
+                 $errorInfos=ErrorManager::getErrorObjects($errors);
+                  echo \yii\helpers\Json::encode(new Result(-1,$errorInfos,null));
+                  return;
+              }
+        }
+       ErrorManager::encodeHttpError(400);
+       return;
+       
     }
 
 }
