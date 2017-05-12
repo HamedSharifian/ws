@@ -19,6 +19,7 @@ class Stores extends \yii\db\ActiveRecord
 {
     
     const SCENARIO_GET_STOKCS="Get_Stocks";
+    const SCENARIO_GET_FAVOURTIES="Get_ALL_FAVOURTITES";
 
 
     /**
@@ -37,6 +38,10 @@ class Stores extends \yii\db\ActiveRecord
         return [
               ['ID'	,'required','on'=>self::SCENARIO_GET_STOKCS,'message'=> ErrorManager::invalid_store_id],
               ['ID'	,'integer' ,'on'=>self::SCENARIO_GET_STOKCS,'message'=> ErrorManager::invalid_store_id],
+              ['ID'	,'required','on'=>self::SCENARIO_GET_STOKCS,'message'=> ErrorManager::invalid_store_id],
+              ['ID'	,'integer' ,'on'=>self::SCENARIO_GET_STOKCS,'message'=> ErrorManager::invalid_store_id],
+              ['ID'	,'required','on'=>self::SCENARIO_GET_STOKCS,'message'=> ErrorManager::invalid_store_id],
+              ['ID'	,'checkStoreExistnce' ,'on'=>self::SCENARIO_GET_STOKCS,'message'=> ErrorManager::invalid_store_id],
             //[['ID', 'rial'], 'integer'],
             //[['link'], 'string'],
             //[['name', 'logo'], 'string', 'max' => 255],
@@ -63,6 +68,14 @@ class Stores extends \yii\db\ActiveRecord
     public function getStocks()
     {
         return $this->hasMany(Stocks::className(), ['storeTo' => 'ID']);
+    }
+    
+    
+     function checkStoreExistnce(){
+         $user = $this->find()->where("ID=".$this->ID);
+         if($user==null){
+            $this->addError('ID',  ErrorManager::invalid_store_id);
+         }
     }
 
 }
